@@ -45,14 +45,19 @@ app.use((req,res)=>{
   res.status(404).render('404',{layout:false})
 })
 
-app.use((err, req, res, next) => {
-  console.log('Render Error:', err.message);
+// app.use((err, req, res, next) => {
+//   console.log('Render Error:', err.message);
   
-  res.status(500).render('error', {
-    message: 'Something went wrong in the template!',
-    error: true ? err : {}
-  });
+//   res.status(500).render('error', {
+//     message: 'Something went wrong in the template!',
+//     error: true ? err : {}
+//   });
+// });
+
+app.use((err, req, res, next) => {
+  res.status(500).send(`<pre>${err.stack}</pre>`);
 });
+
 
 
 mongodbconnection().then(()=>{
