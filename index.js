@@ -12,7 +12,6 @@ import dotenv  from "dotenv";
 import mongodbconnection from './database/mongodb.js';
 import flash from 'express-flash';
 import session from 'express-session'
-import serverless from "serverless-http"
 app.set('view engine', 'ejs');
 // app.set('views', path.join(__dirname, 'views'));
 const __filename = fileURLToPath(import.meta.url);
@@ -36,8 +35,8 @@ app.use('/authe',autheroute);
 app.use('/api',flipkartapp);
 app.use('/admin-invest',isLoggedIn,adminpannelroute);
 
-app.get('/', (req, res) => {
-  res.status(200).send('app is runnin')
+app.get('/',isLoggedIn,(req, res) => {
+  res.status(200).render('index',{user:req.userId})
 });
 
 
@@ -57,11 +56,10 @@ app.use((err, req, res, next) => {
 });
 
 
-//mongodbconnection().then(()=>{
-//  app.listen(3000, () => {
-//  console.log('Server running on port 3000');
-//});
-//})
-await mongodbconnection();
-export const handler = serverless(app);
+mongodbconnection().then(()=>{
+  app.listen(3000, () => {
+  console.log('Server running on port 3000');
+});
+})
+
  
