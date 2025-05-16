@@ -18,7 +18,7 @@ app.set('view engine', 'ejs');
  app.set('views', path.join(__dirname, '../views'));
 app.use(express.json())
 app.use(expressLayouts);
-app.use(express.urlencoded({ extended: true }));
+//app.use(express.urlencoded({ extended: true }));
 // Optional: set the layout file name (default is 'layout.ejs')
 dotenv.config()
 app.use(session({
@@ -42,7 +42,7 @@ app.use((req, res, next) => {
 });
 
 app.get('/',(req, res) => {
-  res.status(200).render('index')
+  res.status(200).send('Server running')
 });
 
 
