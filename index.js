@@ -35,7 +35,7 @@ app.use('/authe',autheroute);
 app.use('/api',flipkartapp);
 app.use('/admin-invest',isLoggedIn,adminpannelroute);
 
-app.get('/',isLoggedIn,(req, res) => {
+app.get('/',(req, res) => {
   res.status(200).render('test',{layout:false})
 });
 
