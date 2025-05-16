@@ -1,0 +1,61 @@
+<nav class="bg-purple-700 text-white  relative shadow-lg">
+  <div class="max-w-7xl mx-auto px-4">
+    <div class="flex justify-between h-16">
+      <div class=" items-center flex">
+        <a href="/admin-invest" class="text-xl font-bold">GrowRupee2</a>
+         <% if(user){ %>
+  <h2 class="text-sm flex gap-1 items-center font-bold text-gray-200 absolute left-2 bottom-0"><ion-icon   name="person-circle-outline"></ion-icon><%= user.name %></h2>
+  <% }%>
+      </div>
+
+      <!-- Mobile Toggle Button -->
+      <div class="md:hidden flex items-center">
+        <button id="menu-toggle" class="focus:outline-none">
+          <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+      </div>
+
+      <!-- Menu Links -->
+      
+      <div id="menu" class="right-0 hidden md:mx-6 p-2 max-w-auto md:max-w-none md:relative top-[64px] md:top-0 bg-purple-700 absolute md:flex md:items-center md:space-x-4 w-full md:max-w-[100vh] md:overflow-x-scroll z-[1000] md:overflow-y-hidden md:mt-0">
+        
+           <a href="/admin-invest"   class="block   hover:bg-purple-600 px-3 py-2 flex items-center gap-2 rounded-md"><ion-icon class="text-xl" name="grid-outline"></ion-icon> Home</a>
+        <a   href="/admin-invest/usermanegment" class=" hover:bg-purple-600 px-3 py-2 gap-2 flex items-center rounded-md"><ion-icon name="people-circle-outline" class="text-xl"></ion-icon>User_Manegmnet</a>
+        <a   href="/admin-invest/withdrawalmanagement" class="block   hover:bg-purple-600 px-3 flex items-center gap-2 py-2 rounded-md"><ion-icon name="wallet-outline" class="text-xl"></ion-icon>Withdraw_Manegmnet</a>
+        <a   href="/admin-invest/productmanegment" class="block   hover:bg-purple-600 px-3 flex items-center gap-2 py-2 rounded-md"><ion-icon name="bag-outline" class="text-xl"></ion-icon>Products_Manegmnet</a>
+        <a   href="/admin-invest/rechargemanagement" class="block   hover:bg-purple-600 px-3 flex items-center gap-2 py-2 rounded-md"><ion-icon name="wallet-outline" class="text-xl"></ion-icon>Recharge_Manegmnet</a>
+      
+       
+            <a   href="/admin-invest/logoute" class="block  items-center gap-2  bg-white  text-purple-700 px-3 py-2 rounded flex"><ion-icon class="text-xl " name="log-in-outline"></ion-icon> Logoute</a>
+      </div>
+     
+    </div>
+  </div>
+</nav>
+
+<!-- Toggle Script -->
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+  
+    const toggle = document.getElementById("menu-toggle");
+    const menu = document.getElementById("menu");
+    const menuLinks = menu.querySelectorAll("a");
+    toggle.addEventListener("click", () => {
+      menu.classList.toggle("hidden");
+    });
+    
+    menuLinks.forEach(link => {
+      link.addEventListener("click", () => {
+     
+          menu.classList.add("hidden");
+        
+      });
+      
+  });
+  
+  });
+  
+</script>

@@ -1,0 +1,55 @@
+<div class="bg-gray-100 p-8">
+ <h1 class="text-3xl font-bold text-purple-700 mb-6">Withdraw Requests</h1>
+
+  <!-- Request History -->
+  <div class="bg-white p-4 rounded shadow mb-8">
+    <h2 class="text-xl font-semibold text-purple-600 mb-4">Request History</h2>
+    <table class="w-full table-auto">
+      <thead>
+        <tr class="bg-purple-200">
+          <th class="px-4 py-2">User</th>
+          <th class="px-4 py-2">Amount</th>
+          <th class="px-4 py-2">Date</th>
+          <th class="px-4 py-2">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% withdrawals.forEach(req => { %>
+          <tr class="border-t">
+            <td class="px-4 py-2"><%= req.name %></td>
+            <td class="px-4 py-2">₹<%= req.amount %></td>
+            <td class="px-4 py-2"><%= req.date %></td>
+            <td class="px-4 py-2">
+              <form action="/approve/<%= req.id %>" method="POST">
+                <button class="bg-purple-600 text-white px-3 py-1 rounded hover:bg-purple-700">Approve</button>
+              </form>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Approval History -->
+  <div class="bg-white p-4 rounded shadow">
+    <h2 class="text-xl font-semibold text-purple-600 mb-4">Approval History</h2>
+    <table class="w-full table-auto">
+      <thead>
+        <tr class="bg-purple-200">
+          <th class="px-4 py-2">User</th>
+          <th class="px-4 py-2">Amount</th>
+          <th class="px-4 py-2">Approved Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% withdrawals.forEach(req => { %>
+          <tr class="border-t">
+            <td class="px-4 py-2"><%= req.name %></td>
+            <td class="px-4 py-2">₹<%= req.amount %></td>
+            <td class="px-4 py-2"><%= req.date %></td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+  </div>
