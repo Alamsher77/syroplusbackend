@@ -13,9 +13,9 @@ import mongodbconnection from '../database/mongodb.js';
 import flash from 'express-flash';
 import session from 'express-session'
 app.set('view engine', 'ejs');
-// app.set('views', path.join(__dirname, 'views'));
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+ app.set('views', path.join(__dirname, '../views'));
 app.use(express.json())
 app.use(expressLayouts);
 app.use(express.urlencoded({ extended: true }));
