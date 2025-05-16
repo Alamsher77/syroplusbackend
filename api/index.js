@@ -2,14 +2,14 @@ import express from 'express';
 const app = express();
 import path from 'path';
 import expressLayouts from'express-ejs-layouts';
-import autheroute from './route/autheroute.js'
-import adminpannelroute from './route/adminpannelroute.js'
-import flipkartapp from './route/flipkartapi.js'
-import {isLoggedIn} from './authmiddleware/index.js'
+import autheroute from '../route/autheroute.js'
+import adminpannelroute from '../route/adminpannelroute.js'
+import flipkartapp from '../route/flipkartapi.js'
+import {isLoggedIn} from '../authmiddleware/index.js'
 import cookieParser from 'cookie-parser';
 import { fileURLToPath } from 'url';
 import dotenv  from "dotenv";
-import mongodbconnection from './database/mongodb.js';
+import mongodbconnection from '../database/mongodb.js';
 import flash from 'express-flash';
 import session from 'express-session'
 app.set('view engine', 'ejs');
@@ -34,9 +34,15 @@ app.use(cookieParser())
 app.use('/authe',autheroute);
 app.use('/api',flipkartapp);
 app.use('/admin-invest',isLoggedIn,adminpannelroute);
+// api/index.js
+
+app.use((req, res, next) => {
+  res.locals.user = null; // ✅ default value (replace with actual user when available)
+  next();
+});
 
 app.get('/',(req, res) => {
-  res.status(200).render('test',{layout:false})
+  res.status(200).render('index')
 });
 
 
