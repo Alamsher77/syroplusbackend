@@ -3,8 +3,7 @@ import userModel from '../../models/usermodel.js'
 import flash from 'express-flash'
 import bcrypt from 'bcryptjs'
 const login = async (req,res)=>{
-  const {email,password} = req.body
-   
+  const {email,password} = req.body 
   try {
      if(!email || !password) {
       req.flash('error',"Please enter the email or  password")

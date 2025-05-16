@@ -19,6 +19,10 @@ const alluserschema = new mongoose.Schema({
     required:true,
     unique:true,
   },
+  invite_url:{
+    type:String,
+    required:true
+  },
   whoinvitecode:{
     type:String,
   },

@@ -15,6 +15,7 @@
   <div id="alertBox" class="bg-red-500 font-bold text-white mb-4 capitalize px-4 py-2"><%= error[0] %></div>
 <% } %>
 
+ 
   <div class="w-full max-w-md p-6">
     
     <!-- Logo -->
@@ -40,14 +41,15 @@
     </form>
   </div>
   
-    <script>
+  <script>
    setTimeout(() => {
     const alertBox = document.getElementById('alertBox');
     if (alertBox) {
       alertBox.style.opacity = '0';
       setTimeout(() => alertBox.remove(), 1000); // Remove from DOM after fade out
+      
     }
-  }, 5000); // 3 seconds
+  }, 5000); // 3 seconds 
 </script>
 </body>
 </html>

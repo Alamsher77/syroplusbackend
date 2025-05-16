@@ -51,6 +51,10 @@ autheroute.get('/alluser/',(req,res)=>{
      
 })
 autheroute.get('/download',(req,res)=>{
-  res.render('alluser/download',{layout:false,})
+  res.render('alluser/download',{
+    layout:false,
+    success:req.flash("success"),
+    error:req.flash('error'), 
+  })
 })
 export default autheroute 
