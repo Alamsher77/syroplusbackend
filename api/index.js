@@ -12,8 +12,8 @@ import dotenv  from "dotenv";
 import mongodbconnection from '../database/mongodb.js';
 import flash from 'express-flash';
 import session from 'express-session'
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+ const __filename = fileURLToPath(import.meta.url);
+ const __dirname = path.dirname(__filename);
 app.set('view engine', 'ejs');
  app.set('views', path.join(__dirname, '../views'));
 app.use(express.json())
@@ -27,7 +27,7 @@ app.use(session({
     saveUninitialized: true
 }));
 app.use(flash());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '../public')));
 
 app.set('layout', 'layouts/main');
 app.use(cookieParser())
