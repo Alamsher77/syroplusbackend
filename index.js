@@ -36,14 +36,13 @@ app.use('/api',flipkartapp);
 app.use('/admin-invest',isLoggedIn,adminpannelroute);
 
 app.get('/',isLoggedIn,(req, res) => {
-  res.status(200).render('index',{user:req.userId})
+  res.status(200).render('test',{layout:false})
 });
 
 
 app.use((req,res)=>{
-  // res.status(404).send(`${res.statusCode}: ${res.url}`)
-  // console.log(res) 
-  res.render('404',{layout:false})
+  
+  res.status(404).render('404',{layout:false})
 })
 
 app.use((err, req, res, next) => {
