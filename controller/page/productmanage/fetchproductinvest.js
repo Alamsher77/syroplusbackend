@@ -10,7 +10,6 @@ const fetchproductinvest = async(req,res)=>{
      success:req.flash("success"),
      error:req.flash('error'),
       })
-   console.log(products)
    } catch (e) {
      console.log(e.message)
    }

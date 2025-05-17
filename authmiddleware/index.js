@@ -44,6 +44,23 @@ const allUserAuthe = async(req, res, next) => {
     next()
   }); 
 }
- 
+const flipkartauthe = async(req, res, next) => {
+  const token = req.headers.authorization?.split(" ")[1];  
+  if (token == null) { 
+    res.json({
+    success:false,
+    message:'authentication faild', 
+    })
+      return false 
+    }
+  jwt.verify(token,process.env.All_COOKIES_DATA, (err, user) => {
+     if(err){
+      console.log(`verify error : ${e}`)
+     } 
+    req.userId = user
+    next()
+  }); 
+}
 
-export  {isLoggedIn,allUserAuthe};
+
+export {isLoggedIn,allUserAuthe,flipkartauthe};
