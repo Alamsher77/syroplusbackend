@@ -64,6 +64,8 @@ adminpannelroute.get('/withdrawalmanagement',isLoggedIn,(req,res)=>{
   res.render("page/withdrawmanagement",{withdrawals, user:req.userId})
 })
 
+// recharge api controller
+import addrechargeamount from '../controller/page/rechargemanage/addrechargeamount.js'
 adminpannelroute.get('/rechargemanagement',isLoggedIn,(req,res)=>{
  let rechargeRequests = [
   { userId: "gurjar123", amount: 200 },
@@ -71,7 +73,9 @@ adminpannelroute.get('/rechargemanagement',isLoggedIn,(req,res)=>{
 ];
 
 let completedRecharges = [];
-  res.render("page/rechargemanagement",{rechargeRequests,completedRecharges,user:req.userId})
+  res.render("page/rechargemanagement",{rechargeRequests,completedRecharges,user:req.userId, success:req.flash("success"),
+      error:req.flash('error'), })
 })
+adminpannelroute.post('/addrechargeamount',isLoggedIn,addrechargeamount)
  
 export default adminpannelroute 

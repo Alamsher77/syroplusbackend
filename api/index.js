@@ -45,6 +45,25 @@ app.get('/',(req, res) => {
   res.status(200).send('Server running')
 });
 
+import alluserModel from '../models/allusermodel.js'
+import cron from "node-cron"
+import create_perchase_product_model from "../models/create_perchase_product_model.js"
+cron.schedule('0 * * * *', async () => {
+  const doc = await create_perchase_product_model.findOne();
+  const getuserdata = await alluserModel.findOne({_id:doc.userId})
+  if (!getuserdata) return false
+  if (!doc.product.incomeperiod > 0) return false
+    doc.product.incomeperiod -= 1
+  await alluserModel.findOneAndUpdate( {_id:getuserdata.userId},{ $inc: { total_income: doc.product.dailyincome,today_income: doc.product.dailyincome} }, 
+      { new: true })
+    if (doc.updates === 10) {
+      doc.status = 'completed';
+    }
+
+    await doc.save();
+    console.log(`Updated: count=${doc.count}, updates=${doc.updates}`);
+});
+
 
 app.use((req,res)=>{
   

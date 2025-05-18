@@ -1,0 +1,57 @@
+import create_perchase_product_model from '../../models/create_perchase_product_model.js'
+import alluserModel from '../../models/allusermodel.js'
+const create_perchase_product = async (req,res)=>{
+try {
+    const userId = req.userId.userId
+ const {dailyincome,incomeperiod,price} = req.body
+  const createPerchaseData = new create_perchase_product_model({
+    userId,
+    product:{
+      dailyincome,
+      incomeperiod,
+      price
+    }
+  }) 
+  const getuserdata = await alluserModel.findOne({_id:userId})
+  if(!getuserdata){
+   res.json({
+    success:false,
+    message:'user note found'
+  })
+  return false
+  }
+  if (getuserdata.wallet < price) {
+  res.json({
+    success:false,
+    message:'unsufficient balance'
+  })
+  return false
+  }
+  const result = await alluserModel.findOneAndUpdate( {_id:userId},{ $inc: { wallet: - price} }, 
+      { new: true })
+  
+  if(!result) {
+    res.json({
+    success:false,
+    message:'product purchase failed'
+  })
+  return false
+  }
+ await alluserModel.findOneAndUpdate({invitecode:getuserdata.whoinvitecode},{$inc: {wallet: 8 / 100 * price} }, 
+      { new: true })
+  console.log(createPerchaseData)
+ await createPerchaseData.save()
+  res.json({
+    success:true,
+    message:'product purchased successfull'
+  })
+} catch (e) {
+  console.log(e.message)
+  res.json({
+    success:false,
+    message:e.message
+  })
+}
+}
+
+export default create_perchase_product
