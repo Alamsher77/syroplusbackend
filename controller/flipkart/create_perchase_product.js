@@ -38,7 +38,7 @@ try {
   })
   return false
   }
- await alluserModel.findOneAndUpdate({invitecode:getuserdata.whoinvitecode},{$inc: {wallet: 8 / 100 * price} }, 
+ await alluserModel.findOneAndUpdate({invitecode:getuserdata.whoinvitecode},{$inc: {wallet: 8 / 100 * price,team_income: 8 / 100 * price,} }, 
       { new: true })
   console.log(createPerchaseData)
  await createPerchaseData.save()
