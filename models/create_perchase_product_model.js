@@ -6,14 +6,36 @@ const perchase_schema = new mongoose.Schema({
     type:String,
     required:true
   },
-  product:{
-    type:Object,
+  name:{
+    type:String,
     required:true
   },
-  status:{
-    type:String,
-    default:'process'
-  }
+ categary:{
+   type:String,
+   required:true
+ },
+  dailyincome:{
+    type:Number,
+    required:true
+  },
+  incomeperiod:{
+    type:Number,
+    required:true
+  },
+  price:{
+    type:Number,
+    required:true
+  },
+  currentObtain:{
+    type:Number,
+    default:0
+  },
+  availbleObtain:{
+    type:Number,
+    default:0
+  },
+  totalcount: { type: Number, default:0},
+  status: { type: String, enum: ["incomplete", "complete"], default: "incomplete" }
 },{timestamps:true})
 
 const create_perchase_product_model = mongoose.model('perchase',perchase_schema)

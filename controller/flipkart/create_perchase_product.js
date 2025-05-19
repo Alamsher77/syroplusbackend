@@ -3,14 +3,15 @@ import alluserModel from '../../models/allusermodel.js'
 const create_perchase_product = async (req,res)=>{
 try {
     const userId = req.userId.userId
- const {dailyincome,incomeperiod,price} = req.body
+ const {dailyincome,price,incomeperiod,name,categary} = req.body 
   const createPerchaseData = new create_perchase_product_model({
-    userId,
-    product:{
-      dailyincome,
-      incomeperiod,
-      price
-    }
+    userId, 
+    dailyincome,
+    name,
+    categary, 
+    incomeperiod,
+    price,
+    availbleObtain:price + dailyincome * incomeperiod
   }) 
   const getuserdata = await alluserModel.findOne({_id:userId})
   if(!getuserdata){
@@ -27,7 +28,7 @@ try {
   })
   return false
   }
-  const result = await alluserModel.findOneAndUpdate( {_id:userId},{ $inc: { wallet: - price} }, 
+  const result = await alluserModel.findOneAndUpdate( {_id:userId},{ $inc: { wallet: - price,total_investment: price} }, 
       { new: true })
   
   if(!result) {

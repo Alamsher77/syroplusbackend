@@ -21,5 +21,8 @@ flipkartapp.get('/investproduct',flipkartauthe,investproductfetch)
 //   existing user create_perchase_product
 import create_perchase_product from '../controller/flipkart/create_perchase_product.js'
 flipkartapp.post('/create_perchase_product',flipkartauthe,create_perchase_product)
+import create_perchase_product_fetch from '../controller/flipkart/create_perchase_product_fetch.js'
+flipkartapp.get('/create_perchase_product_fetch',flipkartauthe,create_perchase_product_fetch)
+
 
 export default flipkartapp

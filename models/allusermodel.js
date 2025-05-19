@@ -18,35 +18,51 @@ const alluserschema = new mongoose.Schema({
     type:String,
     required:true,
     unique:true,
-  },
-  invite_url:{
-    type:String,
-    required:true
-  },
+  }, 
   whoinvitecode:{
     type:String,
+    default:''
   },
   wallet:{
     type:Number,
+    default:0
   },
   total_recharge:{
     type:Number,
+    default:0
   },
   total_withdrawal:{
     type:Number,
+    default:0
   },
   total_income:{
     type:Number,
+    default:0
   },
   today_income:{
     type:Number,
+    default:0
   },
   team_size:{
     type:Number,
+    default:0
   },
   team_income:{
     type:Number,
+    default:0
   },
+  withdrawal_wallet:{
+    type:Number,
+    default:0,
+  },
+  total_investment:{
+    type:Number, 
+    default:0
+  },
+  total_obtain:{
+    type:Number, 
+    default:0
+  }
 })
 
 const alluserModel = mongoose.model('alluser',alluserschema)

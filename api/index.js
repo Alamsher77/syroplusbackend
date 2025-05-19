@@ -48,20 +48,59 @@ app.get('/',(req, res) => {
 import alluserModel from '../models/allusermodel.js'
 import cron from "node-cron"
 import create_perchase_product_model from "../models/create_perchase_product_model.js"
-cron.schedule('0 * * * *', async () => {
-  const doc = await create_perchase_product_model.findOne();
-  const getuserdata = await alluserModel.findOne({_id:doc.userId})
-  if (!getuserdata) return false
-  if (!doc.product.incomeperiod > 0) return false
-    doc.product.incomeperiod -= 1
-  await alluserModel.findOneAndUpdate( {_id:getuserdata.userId},{ $inc: { total_income: doc.product.dailyincome,today_income: doc.product.dailyincome} }, 
-      { new: true })
-    if (doc.updates === 10) {
-      doc.status = 'completed';
-    }
 
-    await doc.save();
-    console.log(`Updated: count=${doc.count}, updates=${doc.updates}`);
+async function someAsyncFunction() {
+  return new Promise((resolve) => {
+    setTimeout(() => { 
+      resolve();
+    }, 1000); // simulate 1 second delay
+  });
+}
+cron.schedule('0 0 * * *', async () => {
+   const now = new Date();
+   try {
+    const investments = await create_perchase_product_model.find({ status: "incomplete" });
+
+    for (let inv of investments) {
+
+      if (inv.totalcount >= inv.incomeperiod) {
+        if(inv.totalcount == inv.incomeperiod){
+          console.log('count completed',inv.totalcount)
+          inv.status = "complete";
+         await alluserModel.updateMany({_id:inv.userId}, { $inc: { wallet: inv.price } });
+          inv.availbleObtain = 0
+        }
+      } else {
+         
+        inv.currentObtain += inv.dailyincome;
+        inv.availbleObtain -= inv.dailyincome;
+        inv.totalcount += 1
+        console.log('count not completed',inv.totalcount)
+        const wallet = await alluserModel.findOne({_id: inv.userId });
+        if (wallet) {
+          wallet.wallet += inv.dailyincome;
+          wallet.total_income += inv.dailyincome
+          wallet.today_income += inv.dailyincome
+          wallet.total_obtain += inv.dailyincome
+          await wallet.save();
+        }
+      } 
+      await inv.save();
+    } 
+    console.log("✅ Investments and Wallets updated.");
+    await someAsyncFunction();
+  } catch (err) {
+   console.log('Cron Error',err)
+  }
+});
+
+cron.schedule('0 0 * * *', async () => { 
+   try { 
+    // Reset all todayEarne to 0 after updating
+    await alluserModel.updateMany({}, { $set: { today_income: 0 } }); 
+  } catch (err) {
+    console.log('❌ Cron Error:',err.messag)
+  }
 });
 
 
@@ -70,15 +109,7 @@ app.use((req,res)=>{
   res.status(404).render('404',{layout:false})
 })
 
-// app.use((err, req, res, next) => {
-//   console.log('Render Error:', err.message);
-  
-//   res.status(500).render('error', {
-//     message: 'Something went wrong in the template!',
-//     error: true ? err : {}
-//   });
-// });
-
+ 
 app.use((err, req, res, next) => {
   res.status(500).send(`<pre>${err.stack}</pre>`);
 });

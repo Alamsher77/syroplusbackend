@@ -34,7 +34,7 @@ const allusersingup = async(req,res)=>{
       const rand = Math.floor(Math.random() * invitetext.length ) 
      genrateinvitecode += invitetext[rand]
     }
-     const invite_url = `${req.protocol}://${req.headers.host+req.originalUrl}?id=${genrateinvitecode}`;
+ 
     const userinvitecodestatus = await alluserModel.findOne({invitecode:users?.whoinvitecode})
     if(userinvitecodestatus){
      const result =  await alluserModel.findOneAndUpdate( { invitecode:users?.whoinvitecode},  
@@ -45,15 +45,7 @@ const allusersingup = async(req,res)=>{
     const newusers = new alluserModel({
       ...users,
       invitecode:genrateinvitecode,
-      password:hashPassword,
-      wallet:0,
-      total_recharge:0,
-      total_withdrawal:0,
-      total_income:0,
-      today_income:0,
-      team_size:0,
-      team_income:0,
-      invite_url,
+      password:hashPassword,  
     })
  
     console.log(newusers)
