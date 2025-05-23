@@ -24,5 +24,9 @@ flipkartapp.post('/create_perchase_product',flipkartauthe,create_perchase_produc
 import create_perchase_product_fetch from '../controller/flipkart/create_perchase_product_fetch.js'
 flipkartapp.get('/create_perchase_product_fetch',flipkartauthe,create_perchase_product_fetch)
 
+// fet al trasaction history
+import {fetch_all_transaction,fetch_all_transaction_product} from  '../controller/flipkart/fetch_all_transaction.js'
+flipkartapp.get('/fetch_all_transaction',flipkartauthe,fetch_all_transaction)
+flipkartapp.get('/fetch_all_transaction_product',flipkartauthe,fetch_all_transaction_product)
 
 export default flipkartapp

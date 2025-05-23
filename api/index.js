@@ -48,15 +48,8 @@ app.get('/',(req, res) => {
 import alluserModel from '../models/allusermodel.js'
 import cron from "node-cron"
 import create_perchase_product_model from "../models/create_perchase_product_model.js"
-
-async function someAsyncFunction() {
-  return new Promise((resolve) => {
-    setTimeout(() => { 
-      resolve();
-    }, 1000); // simulate 1 second delay
-  });
-}
-cron.schedule('0 0 * * *', async () => {
+import all_type_transaction_method from '../controller/all_type_transaction.js'
+cron.schedule('0 3 * * *', async () => {
    const now = new Date();
    try {
     const investments = await create_perchase_product_model.find({ status: "incomplete" });
@@ -67,7 +60,7 @@ cron.schedule('0 0 * * *', async () => {
         if(inv.totalcount == inv.incomeperiod){
           console.log('count completed',inv.totalcount)
           inv.status = "complete";
-         await alluserModel.updateMany({_id:inv.userId}, { $inc: { wallet: inv.price } });
+        await alluserModel.updateMany({_id:inv.userId}, { $inc: { wallet: inv.price } });
           inv.availbleObtain = 0
         }
       } else {
@@ -82,13 +75,14 @@ cron.schedule('0 0 * * *', async () => {
           wallet.total_income += inv.dailyincome
           wallet.today_income += inv.dailyincome
           wallet.total_obtain += inv.dailyincome
-          await wallet.save();
+         
+   all_type_transaction_method({transaction_amount:inv.dailyincome,userId:inv.userId,transaction_type:'product',})
+      await wallet.save();
         }
       } 
       await inv.save();
     } 
     console.log("✅ Investments and Wallets updated.");
-    await someAsyncFunction();
   } catch (err) {
    console.log('Cron Error',err)
   }

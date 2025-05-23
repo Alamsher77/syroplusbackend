@@ -4,25 +4,45 @@ import isValidPhoneNumber from '../../validatenumber.js'
 import bcrypt from 'bcryptjs'
 const allusersingup = async(req,res)=>{
   const {...users} = req.body 
-  try {
-  
+  try { 
     const numbervalidate = isValidPhoneNumber(users.phone)
     if(!numbervalidate){
-      req.flash('error','please valid phone number')
-      res.redirect(`/authe/alluser${!users?.whoinvitecode ? "":"?id="+users?.whoinvitecode}`)
+     if(users?.web == 'web'){
+     req.flash('error','Please enter the valid number');
+      res.redirect(`/authe/alluser${!users?.whoinvitecode ? "":"?id="+users?.whoinvitecode}`);
+      }else{
+    res.json({
+      success:false,
+      message:'Please enter the valid number'
+    })
+  }
       return  false
     }
     
     if(users?.confirmPassword !== users?.password){
-      req.flash('error','password or confirmPassword not match');
+       if(users?.web == 'web'){
+     req.flash('error','password or confirmPassword note match');
       res.redirect(`/authe/alluser${!users?.whoinvitecode ? "":"?id="+users?.whoinvitecode}`);
+      }else{
+    res.json({
+      success:false,
+      message:'password or confirmPassword note matchr'
+    })
+  }
       return  false
     } 
   const alradyusrs = await alluserModel.findOne({phone:users.phone})
  
     if(alradyusrs){
-      req.flash('error','user alrady acount created')
-      res.redirect(`/authe/alluser${!users?.whoinvitecode ? "":"?id="+users?.whoinvitecode}`)
+       if(users?.web == 'web'){
+     req.flash('error','User alrady account created');
+      res.redirect(`/authe/alluser${!users?.whoinvitecode ? "":"?id="+users?.whoinvitecode}`);
+      }else{
+    res.json({
+      success:false,
+      message:'User alrady account created'
+    })
+  }
       return  false
     }
   const salt = await bcrypt.genSalt(10)
@@ -50,12 +70,25 @@ const allusersingup = async(req,res)=>{
  
     console.log(newusers)
     await newusers.save()
-   req.flash('success','Users Created SuccessFull') 
-    res.redirect(`/authe/download`) 
-     
+      if(users?.web == 'web'){
+     req.flash('success','Users Created SuccessFull') 
+     res.redirect(`/authe/download`) 
+      }else{
+    res.json({
+      success:true,
+      message:'Users Created SuccessFull'
+    })
+  } 
   } catch (e) {
-     req.flash('error',e.message)
-     res.redirect(`/authe/alluser${!users?.whoinvitecode ? "":"?id="+users?.whoinvitecode}`)
+     if(users?.web == 'web'){
+     req.flash('error',e.message);
+      res.redirect(`/authe/alluser${!users?.whoinvitecode ? "":"?id="+users?.whoinvitecode}`);
+      }else{
+    res.json({
+      success:false,
+      message:e.message
+    })
+  }
   }
 }
 
