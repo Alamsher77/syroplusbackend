@@ -49,7 +49,7 @@ import alluserModel from '../models/allusermodel.js'
 import cron from "node-cron"
 import create_perchase_product_model from "../models/create_perchase_product_model.js"
 import all_type_transaction_method from '../controller/all_type_transaction.js'
-cron.schedule('*/5 * * * *', async () => {
+cron.schedule('24 8 * * *', async () => {
    const now = new Date();
    try {
     const investments = await create_perchase_product_model.find({ status: "incomplete" });
