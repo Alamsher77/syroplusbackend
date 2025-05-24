@@ -1,7 +1,10 @@
-
+import investmentmodel from '../../../models/Investproduct.js'
 const updateproduct = async (req,res)=>{
-  console.log(`update ${req.params.id}`)
-  req.flash('success',"product updated") 
-  res.redirect('/admin-invest/productmanegment')
+  const products = await investmentmodel.findOne({_id:req.params.id})
+  res.render("page/productmanagement",{
+     products,user:req.userId,
+     success:req.flash("success"),
+     error:req.flash('error'),
+      })
 }
 export default updateproduct

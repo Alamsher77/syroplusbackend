@@ -49,9 +49,9 @@ import alluserModel from '../models/allusermodel.js'
 import cron from "node-cron"
 import create_perchase_product_model from "../models/create_perchase_product_model.js"
 import all_type_transaction_method from '../controller/all_type_transaction.js'
-cron.schedule('24 8 * * *', async () => {
-   const now = new Date();
-   try {
+cron.schedule('45 17 * * *', async () => {
+  const now = new Date();
+  try {
     const investments = await create_perchase_product_model.find({ status: "incomplete" });
 
     for (let inv of investments) {
@@ -76,7 +76,7 @@ cron.schedule('24 8 * * *', async () => {
           wallet.today_income += inv.dailyincome
           wallet.total_obtain += inv.dailyincome
          
-   all_type_transaction_method({transaction_amount:inv.dailyincome,userId:inv.userId,transaction_type:'product',})
+  all_type_transaction_method({transaction_amount:inv.dailyincome,userId:inv.userId,transaction_type:'product',})
       await wallet.save();
         }
       } 
@@ -84,19 +84,18 @@ cron.schedule('24 8 * * *', async () => {
     } 
     console.log("✅ Investments and Wallets updated.");
   } catch (err) {
-   console.log('Cron Error',err)
+  console.log('Cron Error',err)
   }
 });
 
 cron.schedule('*/10 * * * *', async () => { 
-   try { 
+  try { 
     // Reset all todayEarne to 0 after updating
     await alluserModel.updateMany({}, { $set: { today_income: 0 } }); 
   } catch (err) {
     console.log('❌ Cron Error:',err.messag)
   }
 });
-
 
 app.use((req,res)=>{
   
