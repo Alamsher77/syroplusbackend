@@ -14,6 +14,17 @@ const schema = new mongoose.Schema({
     type:Number,
     required:true,
   },
+  phone:{
+    type:Number,
+  },
+  name:{
+    type:String,
+  },
+  categary:{
+    type:String
+  },
+  
+  
   createdAt: { type: Date, expires: '10d', default: Date.now } 
 })
 

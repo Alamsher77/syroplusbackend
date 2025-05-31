@@ -44,7 +44,7 @@ const teamdata =  await alluserModel.findOneAndUpdate({invitecode:getuserdata.wh
       { new: true })                 
  
  if (teamdata) {
-   all_type_transaction_method({transaction_amount: 8 / 100 * price,transaction_type:'team',whoinvitecode:getuserdata?.whoinvitecode})
+   all_type_transaction_method({transaction_amount: 8 / 100 * price,transaction_type:'team',whoinvitecode:getuserdata?.whoinvitecode,phone:getuserdata.phone})
  }
 
 await createPerchaseData.save()

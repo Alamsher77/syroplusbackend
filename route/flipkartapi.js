@@ -29,4 +29,9 @@ import {fetch_all_transaction,fetch_all_transaction_product} from  '../controlle
 flipkartapp.get('/fetch_all_transaction',flipkartauthe,fetch_all_transaction)
 flipkartapp.get('/fetch_all_transaction_product',flipkartauthe,fetch_all_transaction_product)
 
+// fetch all recharge transacton 
+import fetch_recharge_transaction from '../controller/flipkart/fetch_recharge_transaction.js'
+
+flipkartapp.get('/fetch_recharge_transaction',flipkartauthe,fetch_recharge_transaction)
+
 export default flipkartapp

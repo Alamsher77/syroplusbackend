@@ -1,30 +1,16 @@
 import express from 'express'
-import {isLoggedIn} from '../authmiddleware/index.js'
+import {isLoggedIn,flipkartauthe} from '../authmiddleware/index.js'
 
 const adminpannelroute = express.Router()
 
 import index from '../controller/page/index.js'
-
+import alluserModel from '../models/allusermodel.js'
 adminpannelroute.get('/',isLoggedIn,index)
-adminpannelroute.get('/usermanegment',isLoggedIn,(req,res)=>{
-  const users = [{
-    name:"Alamsher Ansari",
-    email:"alamsheransari15@gmail.com",
-    role:"Admin"
-  },{
-    name:"Samsher Ansari",
-    email:"samsher27@gmail.com",
-    role:"user"
-  },{
-    name:"Alamsher Ansari",
-    email:"alamsheransari15@gmail.com",
-    role:"Admin"
-  },{
-    name:"Samsher Ansari",
-    email:"samsher27@gmail.com",
-    role:"user"
-  }]
- 
+adminpannelroute.get('/usermanegment',isLoggedIn,async(req,res)=>{
+  
+  
+  const users =  await alluserModel.find({})
+ console.log(users)
   res.render("page/usersmanagement",{ user:req.userId,users})
 })
 
@@ -65,17 +51,11 @@ adminpannelroute.get('/withdrawalmanagement',isLoggedIn,(req,res)=>{
 })
 
 // recharge api controller
-import addrechargeamount from '../controller/page/rechargemanage/addrechargeamount.js'
-adminpannelroute.get('/rechargemanagement',isLoggedIn,(req,res)=>{
- let rechargeRequests = [
-  { userId: "gurjar123", amount: 200 },
-  { userId: "gurjar456", amount: 500 }
-];
-
-let completedRecharges = [];
-  res.render("page/rechargemanagement",{rechargeRequests,completedRecharges,user:req.userId, success:req.flash("success"),
-      error:req.flash('error'), })
-})
+import {addrechargeamount,createrechargetransation,update_status_and_userrecharge_amount} from '../controller/page/rechargemanage/addrechargeamount.js'
+import rechargetransaction from '../controller/page/rechargemanage/rechargetransaction.js'
+adminpannelroute.get('/rechargemanagement',isLoggedIn,rechargetransaction)
 adminpannelroute.post('/addrechargeamount',isLoggedIn,addrechargeamount)
+adminpannelroute.post('/createrechargetransation',flipkartauthe,createrechargetransation)
+adminpannelroute.post('/update_status_and_userrecharge_amount',isLoggedIn,update_status_and_userrecharge_amount)
  
 export default adminpannelroute 
