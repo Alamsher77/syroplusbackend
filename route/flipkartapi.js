@@ -34,4 +34,18 @@ import fetch_recharge_transaction from '../controller/flipkart/fetch_recharge_tr
 
 flipkartapp.get('/fetch_recharge_transaction',flipkartauthe,fetch_recharge_transaction)
 
+// convert_to_withdrawal_wallete route
+import convert_to_withdrawal_wallete from '../controller/flipkart/convert_to_withdrawal_wallete.js'
+flipkartapp.post('/convert_to_withdrawal_wallete',flipkartauthe,convert_to_withdrawal_wallete)
+
+// add bank details or fetch bank details
+import {add_bank_account_details,fetch_bank_account_details} from '../controller/flipkart/add_bank_account_details.js'
+flipkartapp.post('/add_bank_account_details',flipkartauthe,add_bank_account_details)
+
+flipkartapp.get('/fetch_bank_account_details',flipkartauthe,fetch_bank_account_details)
+
+// withdrawal password create or update
+import {create_withdrawal_password,update_withdrawal_password} from '../controller/flipkart/create_or_update_withdrawal_password.js'
+flipkartapp.post('/create_withdrawal_password',flipkartauthe,create_withdrawal_password)
+flipkartapp.post('/update_withdrawal_password',flipkartauthe,update_withdrawal_password)
 export default flipkartapp

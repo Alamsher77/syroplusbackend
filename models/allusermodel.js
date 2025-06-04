@@ -62,7 +62,8 @@ const alluserschema = new mongoose.Schema({
   total_obtain:{
     type:Number, 
     default:0
-  }
+  },
+  withdrawal_password:{type:String,default:null}
 })
 
 const alluserModel = mongoose.model('alluser',alluserschema)
