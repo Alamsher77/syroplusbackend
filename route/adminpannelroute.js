@@ -6,11 +6,10 @@ const adminpannelroute = express.Router()
 import index from '../controller/page/index.js'
 import alluserModel from '../models/allusermodel.js'
 adminpannelroute.get('/',isLoggedIn,index)
-adminpannelroute.get('/usermanegment',isLoggedIn,async(req,res)=>{
-  
-  
+adminpannelroute.get('/usermanegment',async(req,res)=>{
+ 
   const users =  await alluserModel.find({})
- console.log(users)
+ 
   res.render("page/usersmanagement",{ user:req.userId,users})
 })
 
