@@ -63,6 +63,10 @@ const alluserschema = new mongoose.Schema({
     type:Number, 
     default:0
   },
+  total_withdrawal_amount:{
+    type:Number, 
+    default:0
+  },
   withdrawal_password:{type:String,default:null}
 })
 

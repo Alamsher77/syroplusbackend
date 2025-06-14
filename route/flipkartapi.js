@@ -48,4 +48,8 @@ flipkartapp.get('/fetch_bank_account_details',flipkartauthe,fetch_bank_account_d
 import {create_withdrawal_password,update_withdrawal_password} from '../controller/flipkart/create_or_update_withdrawal_password.js'
 flipkartapp.post('/create_withdrawal_password',flipkartauthe,create_withdrawal_password)
 flipkartapp.post('/update_withdrawal_password',flipkartauthe,update_withdrawal_password)
+
+// withdrawal to bank
+import {withdrawalToBank} from '../controller/flipkart/withdrawal_to_bank.js'
+flipkartapp.post('/withdrawal_to_bank',flipkartauthe,withdrawalToBank)
 export default flipkartapp
