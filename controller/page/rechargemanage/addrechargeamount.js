@@ -1,98 +1,78 @@
 import isValidPhoneNumber from '../../../validatenumber.js'
 import alluserModel from '../../../models/allusermodel.js'
 import allrechargeMolde from '../../../models/allrecharge_transaction.js'
-const addrechargeamount = async(req,res)=>{
-  try {
-   const {phone,price} = req.body
-     if(!price || !phone){
-       req.flash('error',"please addd number or price")
-        res.redirect('/admin-invest/rechargemanagement')
-        return  false
-     }
-    
-     if(!isValidPhoneNumber(phone)){
-        req.flash('error',"please add valide number")
-        res.redirect('/admin-invest/rechargemanagement')
-        return  false
-     }
-     
-     
-    const result =  await alluserModel.findOneAndUpdate( {phone},  
-      { $inc: { wallet: price,total_recharge:price } }, 
-      { new: true }    )
-      if (!result) {
-        req.flash('error',"recharge  amoun update  failed")
-       res.redirect('/admin-invest/rechargemanagement')
-       return false
-      }
-      console.log(result)
-     req.flash('success',"recharge amount update existing users")
-       res.redirect('/admin-invest/rechargemanagement')
-  } catch (e) {
-    console.log(e.message)
-     req.flash('error',e.message)
-     res.redirect('/admin-invest/rechargemanagement') 
-  }
+ import Razorpay  from 'razorpay' 
+import crypto from  'crypto' 
 
-     
-      console.log(req.body)
-}
 
-const createrechargetransation = async(req,res)=>{
+const create_payment_razorpay = async(req,res)=>{
+  const {amount,currency} = req.body
   try { 
-    const data = req.body
-    const utrnumberget = await allrechargeMolde.findOne({utrnumber:data?.utrnumber})
-    if(utrnumberget){
-      res.json({
-        success:false,
-        message:'UTR Number usede'
-      })
-      return false
-    }
-    const getuser = await alluserModel.findOne({_id:req.userId.userId})
-    const createrecharge = await allrechargeMolde({
-      ...data,
-      userId:req.userId.userId,
-      name:getuser.name
-    })
-    await createrecharge.save()
-    console.log(createrecharge)
-    res.json({
-      success:true,
-      message:'Recharge successfull'
-    })
+    const razorpay = new Razorpay({
+  key_id:process.env.RAZARPAY_ID,
+  key_secret:process.env.RAZARPAY_SECRATE_KEY
+})
+
+const options = {
+    amount: amount * 100, // Amount is in smallest unit (paise for INR)
+    currency, 
+    receipt: `receipt_${Date.now()}`,
+  };
+  
+  const order = await razorpay.orders.create(options) 
+    res.json({success:true,order:{...order,key:process.env.RAZARPAY_ID}}) 
   } catch (e) {
     res.json({
       success:false,
       message:e.message
     })
-  }
-}
-
-const update_status_and_userrecharge_amount = async (req,res)=>{
-  const data = req.body
-  // console.log(data)
-  try {
-     if(data?.type == 'faild'){
-        const update =  await allrechargeMolde.findOneAndUpdate({_id:data.id},{$set:{status:'faild'}},{new:true})
-    console.log(update)
-        req.flash('success',"Payment Faild")
-        res.redirect('/admin-invest/rechargemanagement')
-        return false
-     }
-      
-      const result =  await alluserModel.findOneAndUpdate({_id:data.userId},  
-      { $inc: { wallet: Number(data.amount),total_recharge:Number(data.amount) } }, 
-      { new: true })
-      const update =  await allrechargeMolde.findOneAndUpdate({_id:data.id},{$set:{status:'completed'}},{new:true})
-       
-      req.flash('success',"Payment successfull")
-        res.redirect('/admin-invest/rechargemanagement')
-        
-  } catch (e) {
-    req.flash('error',e.message)
-    res.redirect('/admin-invest/rechargemanagement')
     console.log(e.message)
   }
 }
-export  {addrechargeamount,createrechargetransation,update_status_and_userrecharge_amount}
+
+const verify_razorpay_payment = async (req,res)=>{ 
+
+  try {
+     const {razorpay_order_id, razorpay_payment_id, razorpay_signature,amount } = req.body;
+
+  const hash = crypto
+    .createHmac("sha256", process.env.RAZARPAY_SECRATE_KEY)
+    .update(razorpay_order_id + "|" + razorpay_payment_id)
+    .digest("hex");
+
+  if (!hash === razorpay_signature) { 
+    res.json({success:false,message: "payment failure" });
+    return  false
+  }
+  
+  const allrecharge_transaction = new allrechargeMolde({
+   userId:req.userId.userId, 
+  razorpay_order_id,
+  razorpay_payment_id,
+  recharge_amount: Number(amount), 
+  status:"success"
+  })
+  
+  
+  const updateRechargeAmount = await alluserModel.findOneAndUpdate({_id:req.userId.userId},{$inc:{wallet:Number(amount),total_recharge:Number(amount)}})
+  if(!updateRechargeAmount || !allrecharge_transaction){
+    res.json({
+    success:false,
+    message:'payment failure'
+  })
+  return false 
+  } 
+  await allrecharge_transaction.save()
+  res.json({
+    success:true,
+    message:'Recharge SuccessFull'
+  }) 
+  } catch (e) {
+    res.json({
+      success:false,
+      message:e.message
+    })
+   
+  }
+}
+export  {create_payment_razorpay,verify_razorpay_payment}

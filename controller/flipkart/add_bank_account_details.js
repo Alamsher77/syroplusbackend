@@ -47,8 +47,6 @@ const add_bank_account_details = async (req,res)=>{
 const fetch_bank_account_details = async(req,res)=>{
   try {
       const getdetails_of_bank = await bankdetailsModel.find({userId:req.userId.userId})
-  
-  console.log(getdetails_of_bank)
   if(!getdetails_of_bank){
     res.json({
       success:false,

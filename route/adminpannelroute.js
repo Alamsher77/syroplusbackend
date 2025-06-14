@@ -47,14 +47,5 @@ adminpannelroute.get('/withdrawalmanagement',isLoggedIn,(req,res)=>{
     status: 'Pending'
   }]
   res.render("page/withdrawmanagement",{withdrawals, user:req.userId})
-})
-
-// recharge api controller
-import {addrechargeamount,createrechargetransation,update_status_and_userrecharge_amount} from '../controller/page/rechargemanage/addrechargeamount.js'
-import rechargetransaction from '../controller/page/rechargemanage/rechargetransaction.js'
-adminpannelroute.get('/rechargemanagement',isLoggedIn,rechargetransaction)
-adminpannelroute.post('/addrechargeamount',isLoggedIn,addrechargeamount)
-adminpannelroute.post('/createrechargetransation',flipkartauthe,createrechargetransation)
-adminpannelroute.post('/update_status_and_userrecharge_amount',isLoggedIn,update_status_and_userrecharge_amount)
- 
+}) 
 export default adminpannelroute 

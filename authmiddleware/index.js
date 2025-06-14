@@ -4,12 +4,12 @@ const isLoggedIn = async(req, res, next) => {
   const token = req.cookies?.token
   if (!token) {
     res.redirect('/authe/signin')
-  // res.status(400).json({
-  //   success:false,
-  //   message:'Please login',
-  //   auth:true,
-  //   data:token
-  //   })
+    res.status(400).json({
+    success:false,
+    message:'Please login',
+    auth:true,
+    data:token
+    })
       return false 
     }
   jwt.verify(token,process.env.COOKIES_DATA, (err, user) => {
@@ -23,7 +23,7 @@ const isLoggedIn = async(req, res, next) => {
 }
 const allUserAuthe = async(req, res, next) => {
   const token = req.cookies
-  console.log(token)
+   
   res.json({
     success:false,
     message:'goodo'
@@ -55,7 +55,7 @@ const flipkartauthe = async(req, res, next) => {
     }
   jwt.verify(token,process.env.All_COOKIES_DATA, (err, user) => {
      if(err){
-      console.log(`verify error : ${e}`)
+      console.log(`verify error : ${err}`)
      } 
     req.userId = user
     next()
