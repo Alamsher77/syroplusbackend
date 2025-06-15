@@ -55,4 +55,10 @@ flipkartapp.post('/withdrawal_to_bank',flipkartauthe,withdrawalToBank)
 
 // fetch all withdrawal history
 flipkartapp.get('/all_withdrawal_history',flipkartauthe,allWithdrawalHistory);
+
+// update login password
+import generateOtp from '../controller/flipkart/send_otp.js'
+flipkartapp.post('/send_login_password_otp',flipkartauthe,generateOtp)
+import updateloginpassword from '../controller/flipkart/update_login_password.js'
+flipkartapp.post('/update_login_password',flipkartauthe,updateloginpassword)
 export default flipkartapp
