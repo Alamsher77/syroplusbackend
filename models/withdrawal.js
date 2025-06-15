@@ -13,6 +13,15 @@ min: 300
 userId: {
  type:String,
  required: true
+},
+status: {
+type: String,
+default: 'pending',
+enum: ['pending', 'approved', 'rejected']
+},
+withdrawalAmount: {
+type: Number,
+required: true
 }
 },{timestamps:true})
 
